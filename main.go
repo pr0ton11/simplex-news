@@ -12,6 +12,7 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()
 	client := client.NewSimplexClient(ctx, "ws://localhost:3333")
+	client.SetPrefix("simplex-news")
 	err := client.Connect()
 	if err != nil {
 		panic(err)
