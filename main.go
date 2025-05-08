@@ -11,15 +11,18 @@ import (
 func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()
-	client := client.NewSimplexClient("ws://localhost:3333", ctx)
+	client := client.NewSimplexClient(ctx, "ws://localhost:3333")
 	err := client.Connect()
 	if err != nil {
 		panic(err)
 	}
-	defer client.Close()
-	err = client.SendMessage("Marc", "Hello, World!")
+	err = client.ChangeDisplayName(fmt.Sprintf("Marc-%d", time.Now().Unix()))
 	if err != nil {
-		print(fmt.Sprintf("Error sending message: %v", err))
+		print(err)
 	}
-	fmt.Println("Message sent successfully!")
+	defer client.Close()
+	err = client.SendMessage("@Marc", "Hello, World!")
+	if err != nil {
+		print(err)
+	}
 }
